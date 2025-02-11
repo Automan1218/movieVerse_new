@@ -3,8 +3,6 @@ HELP.md
 !**/src/main/**/target/
 !**/src/test/**/target/
 !target/
-!target/spotbugs-reports/
-!target/spotbugs-reports/*
 
 
 ### STS ###
