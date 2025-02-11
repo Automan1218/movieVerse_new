@@ -115,7 +115,7 @@
                 <configuration>
                     <maxHeap>1024</maxHeap>  <!-- 这里修正 -->
                     <includeFilterFile>${project.basedir}/src/main/resources/myfilter-include.xml</includeFilterFile>
-                    <outputDirectory>${project.build.directory}/spotbugs-reports</outputDirectory>
+                    <outputDirectory>${project.build.directory}/</outputDirectory>
                     <xmlOutput>true</xmlOutput>
                     <htmlOutput>true</htmlOutput>
                     <effort>Max</effort>

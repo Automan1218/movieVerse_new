@@ -1,0 +1,684 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta charset="UTF-8"/>
+      <title>SpotBugs Report</title>
+      <style type="text/css">
+		.tablerow0 {
+			background: #EEEEEE;
+		}
+
+		.tablerow1 {
+			background: white;
+		}
+
+		.detailrow0 {
+			background: #EEEEEE;
+		}
+
+		.detailrow1 {
+			background: white;
+		}
+
+		.tableheader {
+			background: #b9b9fe;
+			font-size: larger;
+		}
+
+		.tablerow0:hover, .tablerow1:hover {
+			background: #aaffaa;
+		}
+
+		.priority-1 {
+				color: red;
+				font-weight: bold;
+		}
+		.priority-2 {
+				color: orange;
+				font-weight: bold;
+		}
+		.priority-3 {
+				color: green;
+				font-weight: bold;
+		}
+		.priority-4 {
+				color: blue;
+				font-weight: bold;
+		}
+		</style>
+      <script type="text/javascript">
+			function toggleRow(elid) {
+				if (document.getElementById) {
+					element = document.getElementById(elid);
+					if (element) {
+						if (element.style.display == 'none') {
+							element.style.display = 'block';
+							//window.status = 'Toggle on!';
+						} else {
+							element.style.display = 'none';
+							//window.status = 'Toggle off!';
+						}
+					}
+				}
+			}
+		</script>
+   </head>
+   <body>
+      <h1>
+         <a href="https://spotbugs.github.io/">SpotBugs</a> Report</h1>
+      <h2>Project Information</h2>
+      <p>Project: 
+		movie_verse_backend</p>
+      <p>SpotBugs version: 4.7.3</p>
+      <p>Code analyzed:</p>
+      <ul>
+         <li>D:\program\NUS\ADProject\movieverse\movie_verse_backend-christian_pivot\target\classes</li>
+      </ul>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>Metrics</h2>
+      <p>1814 lines of code analyzed,
+	in 76 classes, 
+	in 15 packages.</p>
+      <table width="500" cellpadding="5" cellspacing="2">
+         <tr class="tableheader">
+            <th align="left">Metric</th>
+            <th align="right">Total</th>
+            <th align="right">Density*</th>
+         </tr>
+         <tr class="tablerow0">
+            <td>High Priority Warnings</td>
+            <td align="right">2</td>
+            <td align="right">1.10</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>Medium Priority Warnings</td>
+            <td align="right">1</td>
+            <td align="right">0.55</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>Low Priority Warnings</td>
+            <td align="right">21</td>
+            <td align="right">11.58</td>
+         </tr>
+         <tr class="$totalClass">
+            <td>
+               <b>Total Warnings</b>
+            </td>
+            <td align="right">
+               <b>24</b>
+            </td>
+            <td align="right">
+               <b>13.23</b>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <i>(* Defects per Thousand lines of non-commenting source statements)</i>
+      </p>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>Contents</h2>
+      <ul>
+         <li>
+            <a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+         </li>
+         <li>
+            <a href="#Warnings_CORRECTNESS">Correctness Warnings</a>
+         </li>
+         <li>
+            <a href="#Warnings_I18N">Internationalization Warnings</a>
+         </li>
+         <li>
+            <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+         </li>
+         <li>
+            <a href="#Warnings_STYLE">Dodgy code Warnings</a>
+         </li>
+         <li>
+            <a href="#Details">Details</a>
+         </li>
+      </ul>
+      <h1>Summary</h1>
+      <table width="500" cellpadding="5" cellspacing="2">
+         <tr class="tableheader">
+            <th align="left">Warning Type</th>
+            <th align="right">Number</th>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+            </td>
+            <td align="right">3</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <a href="#Warnings_CORRECTNESS">Correctness Warnings</a>
+            </td>
+            <td align="right">1</td>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_I18N">Internationalization Warnings</a>
+            </td>
+            <td align="right">1</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+            </td>
+            <td align="right">17</td>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_STYLE">Dodgy code Warnings</a>
+            </td>
+            <td align="right">2</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <b>Total</b>
+            </td>
+            <td align="right">
+               <b>24</b>
+            </td>
+         </tr>
+      </table>
+      <h1>Warnings</h1>
+      <p>Click on a warning row to see full context information.</p>
+      <h2>
+         <a name="Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e144');">
+            <td>
+               <span class="priority-2">Nm</span>
+            </td>
+            <td>The class name dev.team08.movie_verse_backend.controller.api.reviewAndRatingApiController doesn't start with an upper case letter</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e144" style="display: none;">
+                  <a href="#NM_CLASS_NAMING_CONVENTION">Bug type NM_CLASS_NAMING_CONVENTION (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.controller.api.reviewAndRatingApiController<br/>At reviewAndRatingApiController.java:[line 20]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e153');">
+            <td>
+               <span class="priority-3">Nm</span>
+            </td>
+            <td>The field name dev.team08.movie_verse_backend.dto.request.UserProfileRequest.FavouriteGenres doesn't start with a lower case letter</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e153" style="display: none;">
+                  <a href="#NM_FIELD_NAMING_CONVENTION">Bug type NM_FIELD_NAMING_CONVENTION (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.dto.request.UserProfileRequest<br/>Field dev.team08.movie_verse_backend.dto.request.UserProfileRequest.FavouriteGenres<br/>In UserProfileRequest.java</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e184');">
+            <td>
+               <span class="priority-3">SnVI</span>
+            </td>
+            <td>dev.team08.movie_verse_backend.entity.ids.UserMovieInteractionId is Serializable; consider declaring a serialVersionUID</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e184" style="display: none;">
+                  <a href="#SE_NO_SERIALVERSIONID">Bug type SE_NO_SERIALVERSIONID (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.entity.ids.UserMovieInteractionId<br/>At UserMovieInteractionId.java:[lines 12-32]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_CORRECTNESS">Correctness Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e166');">
+            <td>
+               <span class="priority-1">SA</span>
+            </td>
+            <td>Self assignment of field ReviewAndRatingResponse.itemId in dev.team08.movie_verse_backend.dto.response.ReviewAndRatingResponse.setMovieId(UUID)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e166" style="display: none;">
+                  <a href="#SA_FIELD_SELF_ASSIGNMENT">Bug type SA_FIELD_SELF_ASSIGNMENT (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.dto.response.ReviewAndRatingResponse<br/>In method dev.team08.movie_verse_backend.dto.response.ReviewAndRatingResponse.setMovieId(UUID)<br/>Field dev.team08.movie_verse_backend.dto.response.ReviewAndRatingResponse.itemId<br/>Did you mean to refer to the local variable movieId<br/>At ReviewAndRatingResponse.java:[line 36]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_I18N">Internationalization Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e385');">
+            <td>
+               <span class="priority-1">Dm</span>
+            </td>
+            <td>Found reliance on default encoding in new dev.team08.movie_verse_backend.utility.JwtUtility(): String.getBytes()</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e385" style="display: none;">
+                  <a href="#DM_DEFAULT_ENCODING">Bug type DM_DEFAULT_ENCODING (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.utility.JwtUtility<br/>In method new dev.team08.movie_verse_backend.utility.JwtUtility()<br/>Called method String.getBytes()<br/>At JwtUtility.java:[line 17]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_PERFORMANCE">Performance Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e76');">
+            <td>
+               <span class="priority-3">SIC</span>
+            </td>
+            <td>The class dev.team08.movie_verse_backend.config.CorsConfig$1 could be refactored into a named _static_ inner class</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e76" style="display: none;">
+                  <a href="#SIC_INNER_SHOULD_BE_STATIC_ANON">Bug type SIC_INNER_SHOULD_BE_STATIC_ANON (click for details)</a>
+                  <br/>Anonymous class dev.team08.movie_verse_backend.config.CorsConfig$1<br/>In class dev.team08.movie_verse_backend.config.CorsConfig<br/>In method dev.team08.movie_verse_backend.config.CorsConfig.corsConfigurer()<br/>At CorsConfig.java:[line 13]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e92');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.controller.api.MovieApiController.jwtUtility</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e92" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.controller.api.MovieApiController<br/>Field dev.team08.movie_verse_backend.controller.api.MovieApiController.jwtUtility<br/>At MovieApiController.java:[line 40]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e105');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.controller.api.MovieApiController.movieService</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e105" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.controller.api.MovieApiController<br/>Field dev.team08.movie_verse_backend.controller.api.MovieApiController.movieService<br/>At MovieApiController.java:[line 38]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e118');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.controller.api.MovieApiController.userService</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e118" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.controller.api.MovieApiController<br/>Field dev.team08.movie_verse_backend.controller.api.MovieApiController.userService<br/>At MovieApiController.java:[line 37]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e131');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.controller.api.MovieApiController.watchedMovieService</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e131" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.controller.api.MovieApiController<br/>Field dev.team08.movie_verse_backend.controller.api.MovieApiController.watchedMovieService<br/>At MovieApiController.java:[line 39]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e216');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.mapper.MovieMapper.genreRepository</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e216" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.mapper.MovieMapper<br/>Field dev.team08.movie_verse_backend.mapper.MovieMapper.genreRepository<br/>At MovieMapper.java:[line 22]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e229');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.mapper.MovieMapper.userRepository</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e229" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.mapper.MovieMapper<br/>Field dev.team08.movie_verse_backend.mapper.MovieMapper.userRepository<br/>At MovieMapper.java:[line 24]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e242');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.genreRepository</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e242" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.genreRepository<br/>At MovieService.java:[line 43]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e255');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.jwtUtility</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e255" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.jwtUtility<br/>At MovieService.java:[line 47]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e268');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.movieMapper</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e268" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.movieMapper<br/>At MovieService.java:[line 46]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e281');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.movieRepository</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e281" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.movieRepository<br/>At MovieService.java:[line 42]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e294');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.ratingRepository</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e294" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.ratingRepository<br/>At MovieService.java:[line 44]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e307');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.userRepository</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e307" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.userRepository<br/>At MovieService.java:[line 45]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e320');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.MovieService.userService</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e320" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.MovieService<br/>Field dev.team08.movie_verse_backend.service.MovieService.userService<br/>At MovieService.java:[line 48]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e345');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.UserService.movieRepository</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e345" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.UserService<br/>Field dev.team08.movie_verse_backend.service.UserService.movieRepository<br/>At UserService.java:[line 39]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e359');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.UserService.ratingRepository</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e359" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.UserService<br/>Field dev.team08.movie_verse_backend.service.UserService.ratingRepository<br/>At UserService.java:[line 36]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e372');">
+            <td>
+               <span class="priority-3">UrF</span>
+            </td>
+            <td>Unread field: dev.team08.movie_verse_backend.service.UserService.restTemplate</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e372" style="display: none;">
+                  <a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.UserService<br/>Field dev.team08.movie_verse_backend.service.UserService.restTemplate<br/>At UserService.java:[line 41]</p>
+            </td>
+         </tr>
+      </table>
+      <h2>
+         <a name="Warnings_STYLE">Dodgy code Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d2e193');">
+            <td>
+               <span class="priority-3">BC</span>
+            </td>
+            <td>Unchecked/unconfirmed cast from jakarta.servlet.ServletRequest to jakarta.servlet.http.HttpServletRequest in dev.team08.movie_verse_backend.filter.SessionTimeoutFilter.doFilter(ServletRequest, ServletResponse, FilterChain)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d2e193" style="display: none;">
+                  <a href="#BC_UNCONFIRMED_CAST">Bug type BC_UNCONFIRMED_CAST (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.filter.SessionTimeoutFilter<br/>In method dev.team08.movie_verse_backend.filter.SessionTimeoutFilter.doFilter(ServletRequest, ServletResponse, FilterChain)<br/>Actual type jakarta.servlet.ServletRequest<br/>Expected jakarta.servlet.http.HttpServletRequest<br/>Value loaded from request<br/>At SessionTimeoutFilter.java:[line 14]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d2e333');">
+            <td>
+               <span class="priority-3">REC</span>
+            </td>
+            <td>Exception is caught when Exception is not thrown in dev.team08.movie_verse_backend.service.UserService.verifyToken(String, String)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d2e333" style="display: none;">
+                  <a href="#REC_CATCH_EXCEPTION">Bug type REC_CATCH_EXCEPTION (click for details)</a>
+                  <br/>In class dev.team08.movie_verse_backend.service.UserService<br/>In method dev.team08.movie_verse_backend.service.UserService.verifyToken(String, String)<br/>At UserService.java:[line 91]</p>
+            </td>
+         </tr>
+      </table>
+      <h1>
+         <a name="Details">Details</a>
+      </h1>
+      <h2>
+         <a name="BC_UNCONFIRMED_CAST">BC_UNCONFIRMED_CAST: Unchecked/unconfirmed cast</a>
+      </h2>
+
+<p>
+This cast is unchecked, and not all instances of the type casted from can be cast to
+the type it is being cast to. Check that your program logic ensures that this
+cast will not fail.
+</p>
+
+    <h2>
+         <a name="DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING: Reliance on default encoding</a>
+      </h2>
+
+<p> Found a call to a method which will perform a byte to String (or String to byte) conversion,
+and will assume that the default platform encoding is suitable. This will cause the application
+behavior to vary between platforms. Use an alternative API and specify a charset name or Charset
+object explicitly.</p>
+
+      <h2>
+         <a name="NM_CLASS_NAMING_CONVENTION">NM_CLASS_NAMING_CONVENTION: Class names should start with an upper case letter</a>
+      </h2>
+
+  <p> Class names should be nouns, in mixed case with the first letter of each internal word capitalized. Try to keep your class names simple and descriptive. Use whole words-avoid acronyms and abbreviations (unless the abbreviation is much more widely used than the long form, such as URL or HTML).
+</p>
+
+    <h2>
+         <a name="NM_FIELD_NAMING_CONVENTION">NM_FIELD_NAMING_CONVENTION: Field names should start with a lower case letter</a>
+      </h2>
+
+  <p>
+Names of fields that are not final should be in mixed case with a lowercase first letter and the first letters of subsequent words capitalized.
+</p>
+
+    <h2>
+         <a name="REC_CATCH_EXCEPTION">REC_CATCH_EXCEPTION: Exception is caught when Exception is not thrown</a>
+      </h2>
+  
+  <p>
+  This method uses a try-catch block that catches Exception objects, but Exception is not
+  thrown within the try block, and RuntimeException is not explicitly caught.  It is a common bug pattern to
+  say try { ... } catch (Exception e) { something } as a shorthand for catching a number of types of exception
+  each of whose catch blocks is identical, but this construct also accidentally catches RuntimeException as well,
+  masking potential bugs.
+  </p>
+  <p>A better approach is to either explicitly catch the specific exceptions that are thrown,
+  or to explicitly catch RuntimeException exception, rethrow it, and then catch all non-Runtime Exceptions, as shown below:</p>
+<pre><code>try {
+    ...
+} catch (RuntimeException e) {
+    throw e;
+} catch (Exception e) {
+    ... deal with all non-runtime exceptions ...
+}
+</code></pre>
+  
+     <h2>
+         <a name="SA_FIELD_SELF_ASSIGNMENT">SA_FIELD_SELF_ASSIGNMENT: Self assignment of field</a>
+      </h2>
+
+<p> This method contains a self assignment of a field; e.g.
+</p>
+<pre><code>int x;
+public void foo() {
+    x = x;
+}
+</code></pre>
+<p>Such assignments are useless, and may indicate a logic error or typo.</p>
+
+    <h2>
+         <a name="SIC_INNER_SHOULD_BE_STATIC_ANON">SIC_INNER_SHOULD_BE_STATIC_ANON: Could be refactored into a named static inner class</a>
+      </h2>
+
+  <p> This class is an inner class, but does not use its embedded reference
+  to the object which created it.&nbsp; This reference makes the instances
+  of the class larger, and may keep the reference to the creator object
+  alive longer than necessary.&nbsp; If possible, the class should be
+  made into a <em>static</em> inner class. Since anonymous inner
+classes cannot be marked as static, doing this will require refactoring
+the inner class so that it is a named inner class.</p>
+
+    <h2>
+         <a name="SE_NO_SERIALVERSIONID">SE_NO_SERIALVERSIONID: Class is Serializable, but doesn't define serialVersionUID</a>
+      </h2>
+
+  <p> This class implements the <code>Serializable</code> interface, but does
+  not define a <code>serialVersionUID</code> field.&nbsp;
+  A change as simple as adding a reference to a .class object
+    will add synthetic fields to the class,
+   which will unfortunately change the implicit
+   serialVersionUID (e.g., adding a reference to <code>String.class</code>
+   will generate a static field <code>class$java$lang$String</code>).
+   Also, different source code to bytecode compilers may use different
+   naming conventions for synthetic variables generated for
+   references to class objects or inner classes.
+   To ensure interoperability of Serializable across versions,
+   consider adding an explicit serialVersionUID.</p>
+
+    <h2>
+         <a name="URF_UNREAD_FIELD">URF_UNREAD_FIELD: Unread field</a>
+      </h2>
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
+
+    </body>
+</html>
