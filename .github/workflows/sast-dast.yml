@@ -54,11 +54,13 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+          --network=github_network
         env:
           MYSQL_ROOT_PASSWORD: 123456
           MYSQL_DATABASE: movie_verse_pivot
           MYSQL_USER: user
           MYSQL_PASSWORD: 123456
+
     steps:
 
       # 检出代码
@@ -74,25 +76,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Run backend service
-        run: |
-          docker run -d --name movie_verse -p 8080:8080 automan555/movie_verse-image:latest
+      - name: Create Docker network
+        run: docker network create github_network
 
+      - name: Run backend service
+        run: docker run -d --name movie_verse --network=github_network -p 8080:8080 automan555/movie_verse-image:latest
       - name: Wait for backend to be ready
         run: |
           for i in {1..10}; do
-            curl -f http://host.docker.internal:8080/api/health && break
+            curl -f http://movie_verse:8080/api/health && break
             echo "Waiting for backend to be ready..."
             sleep 5
           done
             
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y maven
-          sudo apt-get install jq
-          npm install -g snyk
+#      - name: Install dependencies
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y maven
+#          sudo apt-get install jq
+#          npm install -g snyk
 
       - name: Wait for MySQL to be ready
         run: sleep 20 # 等待数据库服务启动
@@ -102,15 +105,15 @@ jobs:
           mysql --host=127.0.0.1 --port=3306 -uuser -p123456 -e "SHOW DATABASES;"
 
 
-      - name: Run Web Application
-        run: |
-          nohup mvn spring-boot:run -Dserver.port=8080 &
-          sleep 30 # 等待服务启动
+#      - name: Run Web Application
+#        run: |
+#          nohup mvn spring-boot:run -Dserver.port=8080 &
+#          sleep 30 # 等待服务启动
 
       # 注册用户
       - name: Register a test user
         run: |
-          RESPONSE=$(curl -X POST http://host.docker.internal:8080/api/auth/users/register \
+          RESPONSE=$(curl -X POST http://movie_verse:8080/api/auth/users/register \
             -H "Content-Type: application/json" \
             -H "Accept: */*" \
             -d "{\"username\":\"testuser3\",\"password\":\"123456\",\"email\":\"test2@example.com\"}")
@@ -119,7 +122,7 @@ jobs:
       # 注册并登录获取 Token
       - name: Login and fetch token
         run: |
-          RESPONSE=$(curl -X POST http://host.docker.internal:8080/api/auth/users/login \
+          RESPONSE=$(curl -X POST http://movie_verse:8080/api/auth/users/login \
             -H "Content-Type: application/json" \
             -d '{"username":"testuser3","password":"123456"}')
           echo "Response: $RESPONSE"
@@ -132,7 +135,7 @@ jobs:
 
       - name: Create API endpoints file
         run: |
-          echo "GET http://host.docker.internal:8080/api/auth/profile/me" > api-endpoints.txt
+          echo "GET http://movie_verse:8080/api/auth/profile/me" > api-endpoints.txt
           echo "Authorization: Bearer ${{ env.TOKEN }}" >> api-endpoints.txt
 
 
@@ -146,7 +149,7 @@ jobs:
       - name: Run OWASP ZAP Baseline Scan
         run: |
           docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-          -t http://host.docker.internal:8080/api/auth/profile/me \
+          -t http://movie_verse:8080/api/auth/profile/me \
           -s /zap/wrk/api-endpoints.txt \
           -z "-config replacer.full_list(0).description=auth1 \
               -config replacer.full_list(0).enabled=true \
