@@ -2,8 +2,9 @@ HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-!/target/spotbugs-reports/
-!/target/spotbugs.*
+!target/
+!target/spotbugs-reports/
+!target/spotbugs.*
 
 ### STS ###
 .apt_generated
