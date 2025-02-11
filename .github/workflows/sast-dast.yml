@@ -50,6 +50,9 @@ jobs:
         ports:
           - 3306:3306
         options: >-
+          --default-authentication-plugin=mysql_native_password
+          --skip-networking=0
+          --bind-address=0.0.0.0
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
           --health-timeout=5s
@@ -57,9 +60,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: 123456
           MYSQL_DATABASE: movie_verse_pivot
-
-
-
     steps:
 
       # 检出代码
