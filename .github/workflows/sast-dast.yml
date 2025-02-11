@@ -65,6 +65,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Run backend service
+        run: |
+          docker run -d --name movie_verse -p 8080:8080 movie_verse-image
+
+      - name: Wait for backend to be ready
+        run: |
+          for i in {1..10}; do
+            curl -f http://host.docker.internal:8080/api/health && break
+            echo "Waiting for backend to be ready..."
+            sleep 5
+          done
+            
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -88,7 +101,7 @@ jobs:
       # 注册用户
       - name: Register a test user
         run: |
-          RESPONSE=$(curl -X POST http://192.168.1.13:8080/api/auth/users/register \
+          RESPONSE=$(curl -X POST http://host.docker.internal:8080/api/auth/users/register \
             -H "Content-Type: application/json" \
             -H "Accept: */*" \
             -d "{\"username\":\"testuser3\",\"password\":\"123456\",\"email\":\"test2@example.com\"}")
@@ -97,7 +110,7 @@ jobs:
       # 注册并登录获取 Token
       - name: Login and fetch token
         run: |
-          RESPONSE=$(curl -X POST http://192.168.1.13:8080/api/auth/users/login \
+          RESPONSE=$(curl -X POST http://host.docker.internal:8080/api/auth/users/login \
             -H "Content-Type: application/json" \
             -d '{"username":"testuser3","password":"123456"}')
           echo "Response: $RESPONSE"
@@ -110,7 +123,7 @@ jobs:
 
       - name: Create API endpoints file
         run: |
-          echo "GET http://192.168.1.13:8080/api/auth/profile/me" > api-endpoints.txt
+          echo "GET http://host.docker.internal:8080/api/auth/profile/me" > api-endpoints.txt
           echo "Authorization: Bearer ${{ env.TOKEN }}" >> api-endpoints.txt
 
       
@@ -129,7 +142,7 @@ jobs:
       - name: Run OWASP ZAP Baseline Scan
         run: |
           docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-          -t http://192.168.1.13:8080/api/auth/profile/me \
+          -t http://host.docker.internal:8080/api/auth/profile/me \
           -s /zap/wrk/api-endpoints.txt \
           -z "-config replacer.full_list(0).description=auth1 \
               -config replacer.full_list(0).enabled=true \
