@@ -385,5 +385,8 @@ public class reviewAndRatingApiController {
 //        List<EpisodeRating> ratings = episodeRatingService.getRatingsByUserId(userId);
 //        return ResponseEntity.ok(ratings);
 //    }
-
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("OK");
+    }
 }

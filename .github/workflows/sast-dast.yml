@@ -60,15 +60,6 @@ jobs:
           MYSQL_USER: user
           MYSQL_PASSWORD: 123456
 
-      backend:
-        image: automan555/movie_verse-image:latest
-        ports:
-          - 8080:8080
-        options: >-
-          --health-cmd="curl -f http://localhost:8080/api/health || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
 
@@ -99,11 +90,20 @@ jobs:
 
 #      - name: Run backend service
 #        run: docker run -d --name movie_verse --network=github_network -p 8080:8080 automan555/movie_verse-image:latest
+      - name: Pull backend Docker Image
+        run: docker pull automan555/movie_verse-image:latest
+
+      - name: Start backend container
+        run: |
+            docker run -d --name movie_verse \
+              --link mysql:mysql \
+              -p 8080:8080 \
+              automan555/movie_verse-image:latest
 
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..10}; do
-            mysqladmin ping --host=mysql --user=user --password=123456 && break
+            docker exec movie_verse curl -f http://mysql:3306 && break
             echo "Waiting for MySQL to be ready..."
             sleep 5
           done
@@ -115,9 +115,12 @@ jobs:
             echo "Waiting for backend to be ready..."
             sleep 5
           done
-            
 
-#      - name: Install dependencies
+      - name: Test backend health
+        run: curl http://localhost:8080/api/health
+
+
+      #      - name: Install dependencies
 #        run: |
 #          sudo apt-get update
 #          sudo apt-get install -y maven
