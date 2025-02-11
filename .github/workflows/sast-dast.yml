@@ -60,7 +60,7 @@ jobs:
 
       # 生成扫描报告
       - name: Upload OWASP ZAP Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.0.0
         with:
           name: zap-report
           path: zap.out
