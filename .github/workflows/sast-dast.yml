@@ -123,7 +123,7 @@ jobs:
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
+          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
           -s /zap/wrk/api-endpoints.txt \
           -z "-config replacer.full_list(0).description=auth1 \
               -config replacer.full_list(0).enabled=true \
@@ -134,7 +134,7 @@ jobs:
           -r /zap/wrk/zap-report.html
 
       - name: List ZAP working directory
-        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/zap2docker-stable ls -la /zap/wrk/
+        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy ls -la /zap/wrk/
 
       - name: List files in workspace
         run: ls -la ${{ github.workspace }}
