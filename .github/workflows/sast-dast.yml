@@ -119,7 +119,7 @@ jobs:
 
       # 拉取 OWASP ZAP 镜像
       - name: Pull ZAP Docker Image
-        run: docker pull owasp/glue
+        run: docker pull owasp/zap2docker-stable
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
