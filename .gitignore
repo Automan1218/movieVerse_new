@@ -4,7 +4,8 @@ HELP.md
 !**/src/test/**/target/
 !target/
 !target/spotbugs-reports/
-!target/spotbugs.*
+!target/spotbugs-reports/*
+
 
 ### STS ###
 .apt_generated
