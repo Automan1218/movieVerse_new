@@ -44,22 +44,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: sast
 
-    services:
-      mysql:
-        image: mysql:8.0.39
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-          --network=github_network
-        env:
-          MYSQL_ROOT_PASSWORD: 123456
-          MYSQL_DATABASE: movie_verse_pivot
-          MYSQL_USER: user
-          MYSQL_PASSWORD: 123456
+#    services:
+#      mysql:
+#        image: mysql:8.0.39
+#        ports:
+#          - 3306:3306
+#        options: >-
+#          --health-cmd="mysqladmin ping --silent"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=3
+#          --network=github_network
+#        env:
+#          MYSQL_ROOT_PASSWORD: 123456
+#          MYSQL_DATABASE: movie_verse_pivot
+#          MYSQL_USER: user
+#          MYSQL_PASSWORD: 123456
 
     steps:
 
@@ -78,6 +78,12 @@ jobs:
 
       - name: Create Docker network
         run: docker network create github_network
+
+      - name: Run MySQL service
+        run: |
+          docker run -d --name mysql --network=github_network -e MYSQL_ROOT_PASSWORD=123456 \
+          -e MYSQL_DATABASE=movie_verse_pivot -e MYSQL_USER=user -e MYSQL_PASSWORD=123456 \
+          mysql:8.0.39
 
       - name: Run backend service
         run: docker run -d --name movie_verse --network=github_network -p 8080:8080 automan555/movie_verse-image:latest
