@@ -79,12 +79,20 @@ jobs:
         run: |
           mysql --host=127.0.0.1 --port=3306 -uuser -p123456 -e "SHOW DATABASES;"
 
+
+      - name: Run Web Application
+        run: |
+          nohup mvn spring-boot:run -Dserver.port=8080 &
+          sleep 30 # 等待服务启动
+
       # 登录并获取 Token
       - name: Login and fetch token
         run: |
-          TOKEN=$(curl -X POST http://localhost:8080/api/auth/users/login \
+          RESPONSE=$(curl -X POST http://localhost:8080/api/auth/users/login \
             -H "Content-Type: application/json" \
-            -d '{"username": "testuser2", "password": "123456"}' | jq -r '.token')
+             -d '{"username":"your_username","password":"your_password"}')
+          echo "Response: $RESPONSE"
+          TOKEN=$(echo $RESPONSE | jq -r '.token')
           echo "TOKEN=$TOKEN" >> $GITHUB_ENV
 
       # 验证 Token
@@ -115,7 +123,7 @@ jobs:
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/glue zap-baseline.py \
+          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py \
           -s /zap/wrk/api-endpoints.txt \
           -z "-config replacer.full_list(0).description=auth1 \
               -config replacer.full_list(0).enabled=true \
@@ -126,7 +134,7 @@ jobs:
           -r /zap/wrk/zap-report.html
 
       - name: List ZAP working directory
-        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/glue ls -la /zap/wrk/
+        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/zap2docker-stable ls -la /zap/wrk/
 
       - name: List files in workspace
         run: ls -la ${{ github.workspace }}
