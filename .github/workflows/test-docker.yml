@@ -12,4 +12,4 @@ jobs:
       - name: Test Docker Pull
         run: docker pull hello-world
       - name: Pull ZAP Docker Image
-        run: docker pull owasp/zap2docker-stable
+        run: docker pull owasp/zap2docker-weekly
