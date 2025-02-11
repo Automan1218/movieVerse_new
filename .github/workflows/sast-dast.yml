@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Wait for MySQL to be ready
-        run: sleep 30 # 等待数据库服务启动
+        run: sleep 10 # 等待数据库服务启动
 
       - name: Verify MySQL connection
         run: |
@@ -75,9 +75,8 @@ jobs:
 
       - name: Create API endpoints file
         run: |
-          echo "http://localhost:8080/api/users/login" > api-endpoints.txt
-          echo "http://localhost:8080/api/movies" >> api-endpoints.txt
-          echo "http://localhost:8080/api/users/register" >> api-endpoints.txt
+          echo "http://localhost:8080/api/users/register" > api-endpoints.txt
+          echo "http://localhost:8080/api/users/login" >> api-endpoints.txt
 
       - name: Verify API endpoints file
         run: cat ${{ github.workspace }}/api-endpoints.txt
@@ -107,6 +106,10 @@ jobs:
               -config replacer.full_list(0).regex=false \
               -config replacer.full_list(0).replacement=Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJpYXQiOjE3MzkyODE0MDYsImV4cCI6MTc0MDE0NTQwNn0.9q3tZJNcmFCq9GDHO4JTmoTRQRxfcMczl7ZwPZHsEMo" \
           -r /zap/wrk/zap-report.html
+
+      - name: List ZAP working directory
+        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/zap ls -la /zap/wrk/
+
       - name: List files in workspace
         run: ls -la ${{ github.workspace }}
 
@@ -114,7 +117,9 @@ jobs:
       - name: List workspace files
         run: ls -la ${{ github.workspace }}
 
-
+      - name: Debug ZAP Logs
+        run: cat /zap/wrk/zap.out || echo "No ZAP logs found"
+        
       # 上传 OWASP ZAP 扫描报告
       - name: Upload OWASP ZAP Report
         uses: actions/upload-artifact@v4
