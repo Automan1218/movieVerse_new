@@ -108,7 +108,7 @@ jobs:
           -r /zap/wrk/zap-report.html
 
       - name: List ZAP working directory
-        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/zap ls -la /zap/wrk/
+        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/glue ls -la /zap/wrk/
 
       - name: List files in workspace
         run: ls -la ${{ github.workspace }}
@@ -119,7 +119,7 @@ jobs:
 
       - name: Debug ZAP Logs
         run: cat /zap/wrk/zap.out || echo "No ZAP logs found"
-        
+
       # 上传 OWASP ZAP 扫描报告
       - name: Upload OWASP ZAP Report
         uses: actions/upload-artifact@v4
