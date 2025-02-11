@@ -65,8 +65,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y maven
+          sudo apt-get install jq
+          npm install -g snyk
+
       - name: Wait for MySQL to be ready
-        run: sleep 10 # 等待数据库服务启动
+        run: sleep 20 # 等待数据库服务启动
 
       - name: Verify MySQL connection
         run: |
@@ -100,7 +107,7 @@ jobs:
       - name: Run Web Application
         run: |
           nohup mvn spring-boot:run &
-          sleep 10 # 等待服务启动
+          sleep 15 # 等待服务启动
 
       # 拉取 OWASP ZAP 镜像
       - name: Pull ZAP Docker Image
@@ -108,8 +115,8 @@ jobs:
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/glue zap-baseline.py 
-          -t http://localhost:8080/api \
+          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t owasp/glue zap-baseline.py \
+          -s /zap/wrk/api-endpoints.txt \
           -z "-config replacer.full_list(0).description=auth1 \
               -config replacer.full_list(0).enabled=true \
               -config replacer.full_list(0).matchtype=REQ_HEADER \
