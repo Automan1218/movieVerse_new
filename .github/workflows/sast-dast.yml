@@ -1,0 +1,64 @@
+name: SAST and DAST Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sast:
+    name: Static Application Security Testing (SAST) with SpotBugs
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 设置 Java 和 Maven 环境
+      - name: Set up Java and Maven
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+
+      # 安装依赖并运行 SpotBugs
+      - name: Run SpotBugs
+        run: |
+          mvn clean install
+          mvn spotbugs:spotbugs
+      # 保存 SpotBugs 报告到 GitHub Actions 工作流的结果
+      - name: Upload SpotBugs Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: spotbugs-report
+          path: target/spotbugs-reports/
+
+  dast:
+    name: Dynamic Application Security Testing (DAST) with OWASP ZAP
+    runs-on: ubuntu-latest
+    needs: sast
+
+    steps:
+      # 启动 Web 应用（确保服务能在 localhost:8080 运行）
+      - name: Run Web Application
+        run: |
+          nohup mvn spring-boot:run &
+          sleep 30 # 等待服务启动
+
+      # 启动 OWASP ZAP 扫描
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.8.0
+        with:
+          target: "http://localhost:8080" # 目标 URL
+          rules_file: .github/zap-rules.txt # 可选：指定规则文件（如果需要忽略某些警告）
+
+      # 生成扫描报告
+      - name: Upload OWASP ZAP Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report
+          path: zap.out
