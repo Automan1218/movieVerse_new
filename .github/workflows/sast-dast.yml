@@ -65,6 +65,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 登录 Docker
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Run backend service
         run: |
           docker run -d --name movie_verse -p 8080:8080 movie_verse-image
@@ -126,11 +130,6 @@ jobs:
           echo "GET http://host.docker.internal:8080/api/auth/profile/me" > api-endpoints.txt
           echo "Authorization: Bearer ${{ env.TOKEN }}" >> api-endpoints.txt
 
-      
-
-      # 登录 Docker
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       # 拉取 OWASP ZAP 镜像
       - name: Pull OWASP ZAP Docker Image
