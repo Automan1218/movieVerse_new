@@ -85,12 +85,12 @@ jobs:
           nohup mvn spring-boot:run -Dserver.port=8080 &
           sleep 30 # 等待服务启动
 
-      # 登录并获取 Token
+      # 注册并登录获取 Token
       - name: Login and fetch token
         run: |
           RESPONSE=$(curl -X POST http://localhost:8080/api/auth/users/login \
             -H "Content-Type: application/json" \
-             -d '{"username":"your_username","password":"your_password"}')
+             -d '{"username":"testuser2","password":"123456"}')
           echo "Response: $RESPONSE"
           TOKEN=$(echo $RESPONSE | jq -r '.token')
           echo "TOKEN=$TOKEN" >> $GITHUB_ENV
@@ -118,8 +118,8 @@ jobs:
           sleep 15 # 等待服务启动
 
       # 拉取 OWASP ZAP 镜像
-      - name: Pull ZAP Docker Image
-        run: docker pull owasp/zap2docker-stable
+      - name: Pull OWASP ZAP Docker Image
+        run: docker pull ghcr.io/zaproxy/zaproxy
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
