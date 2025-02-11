@@ -61,12 +61,12 @@ jobs:
 
       # 拉取 OWASP ZAP 镜像
       - name: Pull ZAP Docker Image
-        run: docker pull owasp/dependency-check
+        run: docker pull owasp/glue
 
       # 启动 OWASP ZAP 扫描
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          docker run -v $(pwd):/zap/wrk/:rw -t owasp/dependency-check zap-baseline.py -t http://localhost:8080 -r zap-report.html
+          docker run -v $(pwd):/zap/wrk/:rw -t owasp/glue zap-baseline.py -t http://localhost:8080 -r zap-report.html
 
       # 上传 OWASP ZAP 扫描报告
       - name: Upload OWASP ZAP Report
