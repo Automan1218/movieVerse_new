@@ -96,7 +96,6 @@ jobs:
       - name: Start backend container
         run: |
             docker run -d --name movie_verse \
-              --link mysql:mysql \
               -p 8080:8080 \
               automan555/movie_verse-image:latest
 
