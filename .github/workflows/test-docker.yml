@@ -15,4 +15,4 @@ jobs:
       - name: Test Docker Pull
         run: docker pull hello-world
       - name: Pull ZAP Docker Image
-        run: docker pull zaproxy/zaproxy
+        run: docker pull owasp/dependency-check
