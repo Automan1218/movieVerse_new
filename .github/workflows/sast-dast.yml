@@ -83,7 +83,7 @@ jobs:
         run: |
           docker run -d --name mysql --network=github_network -e MYSQL_ROOT_PASSWORD=123456 \
           -e MYSQL_DATABASE=movie_verse_pivot -e MYSQL_USER=user -e MYSQL_PASSWORD=123456 \
-          mysql:8.0.39
+          mysql:8.0
 
       - name: Run backend service
         run: docker run -d --name movie_verse --network=github_network -p 8080:8080 automan555/movie_verse-image:latest
