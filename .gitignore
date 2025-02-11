@@ -2,11 +2,10 @@ HELP.md
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-# 忽略整个 target 文件夹
-target/
-# 例外：允许上传 spotbugs-reports 文件夹
+!target/
 !target/spotbugs-reports/
 !target/spotbugs-reports/*
+
 
 
 
