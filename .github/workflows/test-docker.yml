@@ -7,9 +7,12 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest  # 或者自托管的 Runner
     steps:
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Check Docker Version
         run: docker --version
       - name: Test Docker Pull
         run: docker pull hello-world
       - name: Pull ZAP Docker Image
-        run: docker pull owasp/zap2docker-weekly
+        run: docker pull zaproxy/zaproxy
