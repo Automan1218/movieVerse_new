@@ -117,7 +117,7 @@ jobs:
       - name: Wait for backend to be ready
         run: |
           for i in {1..10}; do
-            curl -f http://movie_verse:8080/api/health && break
+            curl -f http://localhost:8080/api/health && break
             echo "Waiting for backend to be ready..."
             sleep 5
           done
