@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Bug category="PERFORMANCE" />
+    </Match>
+    <!-- 代码风格问题 -->
+    <Match>
+        <Bug category="STYLE" />
+    </Match>
+
+    <!-- 可能的 bug -->
+    <Match>
+        <Bug category="CORRECTNESS" />
+    </Match>
+
+    <!-- 多线程问题 -->
+    <Match>
+        <Bug category="MT_CORRECTNESS" />
+    </Match>
+
+    <!-- 安全漏洞 -->
+    <Match>
+        <Bug category="SECURITY" />
+    </Match>
+
+    <!-- 代码坏味道 -->
+    <Match>
+        <Bug category="BAD_PRACTICE" />
+    </Match>
+
+    <!-- 国际化问题 -->
+    <Match>
+        <Bug category="I18N" />
+    </Match>
+</FindBugsFilter>
