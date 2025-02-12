@@ -11,23 +11,44 @@ jobs:
   dast_scan:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u "${{ secrets.DOCKER_HUB_USER }}" --password-stdin
+#      - name: Login to Docker Hub
+#        run: echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u "${{ secrets.DOCKER_HUB_USER }}" --password-stdin
+#
+#      - name: Pull OWASP ZAP Docker Image
+#        run: docker pull owasp/zap2docker-stable
 
-      - name: Pull OWASP ZAP Docker Image
-        run: docker pull owasp/zap2docker-stable
+
 
       - name: Run OWASP ZAP Scan
+
         env:
           BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/auth/api/health"  # 设置目标地址
         run: |
-          docker run -v ${{ github.workspace }}:/zap/wrk/ -t owasp/zap2docker-stable zap-baseline.py \
+          docker run -v ${{ github.workspace }}:/zap/wrk/ -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
             -t $BASE_URL/api \
             -r zap_report.html
+
+#      - name: Run OWASP ZAP Baseline Scan
+#        run: |
+#                docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
+#                -t http://movie_verse:8080/api/auth/profile/me \
+#                -s /zap/wrk/api-endpoints.txt \
+#                -z "-config replacer.full_list(0).description=auth1 \
+#                    -config replacer.full_list(0).enabled=true \
+#                    -config replacer.full_list(0).matchtype=REQ_HEADER \
+#                    -config replacer.full_list(0).matchstr=Authorization \
+#                    -config replacer.full_list(0).regex=false \
+#                    -config replacer.full_list(0).replacement=Bearer ${{ env.TOKEN }}" \
+#                -r /zap/wrk/zap-report.html
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
