@@ -1,0 +1,35 @@
+name: DAST Scan
+
+#on:
+#  workflow_run:
+#    workflows: ["SAST, Deploy to AWS EC2, and DAST Workflow"]
+#    types:
+#      - completed
+
+jobs:
+  dast_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u "${{ secrets.DOCKER_HUB_USER }}" --password-stdin
+
+      - name: Pull OWASP ZAP Docker Image
+        run: docker pull owasp/zap2docker-stable
+
+      - name: Run OWASP ZAP Scan
+        env:
+          BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/auth/api/health"  # 设置目标地址
+        run: |
+          docker run -v ${{ github.workspace }}:/zap/wrk/ -t owasp/zap2docker-stable zap-baseline.py \
+            -t $BASE_URL/api \
+            -r zap_report.html
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap_report.html

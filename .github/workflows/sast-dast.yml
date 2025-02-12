@@ -9,200 +9,200 @@ on:
       - main
 
 jobs:
-  sast:
-    name: Static Application Security Testing (SAST) with SpotBugs
-    runs-on: ubuntu-latest
-
-    steps:
-      # 检出代码
-      - name: Checkout Code
-        uses: actions/checkout@v4.0.0
-
-      # 设置 Java 和 Maven 环境
-      - name: Set up Java and Maven
-        uses: actions/setup-java@v4.0.0
-        with:
-          java-version: 17
-          distribution: temurin
-
-      - name: Install dependencies and skip tests
-        run: mvn clean install -DskipTests=true
-
-      # 安装依赖并运行 SpotBugs
-      - name: Run SpotBugs
-        run: |
-          mvn spotbugs:spotbugs -DskipTests=true
-      # 保存 SpotBugs 报告到 GitHub Actions 工作流的结果
-      - name: Upload SpotBugs Report
-        uses: actions/upload-artifact@v4.0.0
-        with:
-          name: spotbugs-report
-          path: target/
-
-  dast:
-    name: Dynamic Application Security Testing (DAST) with OWASP ZAP
-    runs-on: ubuntu-latest
-    needs: sast
-
-    services:
-      mysql:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-        env:
-          MYSQL_ROOT_PASSWORD: 123456
-          MYSQL_DATABASE: movie_verse_pivot
-          MYSQL_USER: user
-          MYSQL_PASSWORD: 123456
-
-
-    steps:
-
-      # 检出代码
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-#      # 登录 Docker
-#      - name: Login to Docker Hub
-#        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Create Docker network
-        run: docker network create github_network
-
-#      - name: Pull MySQL Docker Image
-#        run: docker pull mysql:8.0
-
-
-
-#      - name: Run backend service
-#        run: docker run -d --name movie_verse --network=github_network -p 8080:8080 automan555/movie_verse-image:latest
-      - name: Pull backend Docker Image
-        run: docker pull automan555/movie_verse-image:latest
-
-      - name: Run MySQL service
-        run: |
-          docker run -d --name mysql --network=github_network -e MYSQL_ROOT_PASSWORD=123456 \
-          -e MYSQL_DATABASE=movie_verse_pivot -e MYSQL_USER=user -e MYSQL_PASSWORD=123456 \
-          mysql:8.0
-
-      - name: Start backend container
-        run: |
-            docker run -d --name movie_verse \
-              --network=github_network \
-              -p 8080:8080 \
-              -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/movie_verse_pivot \
-              -e SPRING_DATASOURCE_USERNAME=user \
-              -e SPRING_DATASOURCE_PASSWORD=123456 \
-              automan555/movie_verse-image:latest
-
-      - name: Wait for MySQL to be ready
-        run: |
-          for i in {1..10}; do
-            docker exec mysql mysqladmin ping -uuser -p123456 -h127.0.0.1 && break
-            echo "Waiting for MySQL to be ready..."
-            sleep 5
-          done
-      
-
-      - name: Wait for backend to be ready
-        run: |
-          for i in {1..10}; do
-            curl -f http://192.168.1.13:8080/api/health && break
-            echo "Waiting for backend to be ready..."
-            sleep 5
-          done
-
-      - name: Test backend health
-        run: curl http://192.168.1.13:8080/api/health
-
-
-      #      - name: Install dependencies
+#  sast:
+#    name: Static Application Security Testing (SAST) with SpotBugs
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      # 检出代码
+#      - name: Checkout Code
+#        uses: actions/checkout@v4.0.0
+#
+#      # 设置 Java 和 Maven 环境
+#      - name: Set up Java and Maven
+#        uses: actions/setup-java@v4.0.0
+#        with:
+#          java-version: 17
+#          distribution: temurin
+#
+#      - name: Install dependencies and skip tests
+#        run: mvn clean install -DskipTests=true
+#
+#      # 安装依赖并运行 SpotBugs
+#      - name: Run SpotBugs
 #        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y maven
-#          sudo apt-get install jq
-#          npm install -g snyk
-
-#      - name: Run Web Application
+#          mvn spotbugs:spotbugs -DskipTests=true
+#      # 保存 SpotBugs 报告到 GitHub Actions 工作流的结果
+#      - name: Upload SpotBugs Report
+#        uses: actions/upload-artifact@v4.0.0
+#        with:
+#          name: spotbugs-report
+#          path: target/
+#
+#  dast:
+#    name: Dynamic Application Security Testing (DAST) with OWASP ZAP
+#    runs-on: ubuntu-latest
+#    needs: sast
+#
+#    services:
+#      mysql:
+#        image: mysql:8.0
+#        ports:
+#          - 3306:3306
+#        options: >-
+#          --health-cmd="mysqladmin ping --silent"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=3
+#        env:
+#          MYSQL_ROOT_PASSWORD: 123456
+#          MYSQL_DATABASE: movie_verse_pivot
+#          MYSQL_USER: user
+#          MYSQL_PASSWORD: 123456
+#
+#
+#    steps:
+#
+#      # 检出代码
+#      - name: Checkout Code
+#        uses: actions/checkout@v4
+#
+##      # 登录 Docker
+##      - name: Login to Docker Hub
+##        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v2
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: Create Docker network
+#        run: docker network create github_network
+#
+##      - name: Pull MySQL Docker Image
+##        run: docker pull mysql:8.0
+#
+#
+#
+##      - name: Run backend service
+##        run: docker run -d --name movie_verse --network=github_network -p 8080:8080 automan555/movie_verse-image:latest
+#      - name: Pull backend Docker Image
+#        run: docker pull automan555/movie_verse-image:latest
+#
+#      - name: Run MySQL service
 #        run: |
-#          nohup mvn spring-boot:run -Dserver.port=8080 &
-#          sleep 30 # 等待服务启动
-
-      # 注册用户
-      - name: Register a test user
-        run: |
-          RESPONSE=$(curl -X POST http://movie_verse:8080/api/auth/users/register \
-            -H "Content-Type: application/json" \
-            -H "Accept: */*" \
-            -d "{\"username\":\"testuser3\",\"password\":\"123456\",\"email\":\"test2@example.com\"}")
-          echo "Registration Response: $RESPONSE"
-
-      # 注册并登录获取 Token
-      - name: Login and fetch token
-        run: |
-          RESPONSE=$(curl -X POST http://movie_verse:8080/api/auth/users/login \
-            -H "Content-Type: application/json" \
-            -d '{"username":"testuser3","password":"123456"}')
-          echo "Response: $RESPONSE"
-          TOKEN=$(echo $RESPONSE | jq -r '.token')
-          echo "TOKEN=$TOKEN" >> $GITHUB_ENV
-
-      # 验证 Token
-      - name: Verify token
-        run: "echo \"Token: ${{ env.TOKEN }}\""
-
-      - name: Create API endpoints file
-        run: |
-          echo "GET http://movie_verse:8080/api/auth/profile/me" > api-endpoints.txt
-          echo "Authorization: Bearer ${{ env.TOKEN }}" >> api-endpoints.txt
-
-
-      # 拉取 OWASP ZAP 镜像
-      - name: Pull OWASP ZAP Docker Image
-        run: docker pull ghcr.io/zaproxy/zaproxy
-
-      - name: Fix permissions for ZAP output directory
-        run: sudo chmod -R 777 /home/runner/work/movieVerse_new/movieVerse_new
-
-      - name: Run OWASP ZAP Baseline Scan
-        run: |
-          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-          -t http://movie_verse:8080/api/auth/profile/me \
-          -s /zap/wrk/api-endpoints.txt \
-          -z "-config replacer.full_list(0).description=auth1 \
-              -config replacer.full_list(0).enabled=true \
-              -config replacer.full_list(0).matchtype=REQ_HEADER \
-              -config replacer.full_list(0).matchstr=Authorization \
-              -config replacer.full_list(0).regex=false \
-              -config replacer.full_list(0).replacement=Bearer ${{ env.TOKEN }}" \
-          -r /zap/wrk/zap-report.html
-
-      - name: List ZAP working directory
-        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy ls -la /zap/wrk/
-
-      - name: List files in workspace
-        run: ls -la ${{ github.workspace }}
-
-
-      - name: List workspace files
-        run: ls -la ${{ github.workspace }}
-
-      - name: Debug ZAP Logs
-        run: cat /zap/wrk/zap.out || echo "No ZAP logs found"
-
-      # 上传 OWASP ZAP 扫描报告
-      - name: Upload OWASP ZAP Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-report
-          path: ${{ github.workspace }}/zap-report.html
+#          docker run -d --name mysql --network=github_network -e MYSQL_ROOT_PASSWORD=123456 \
+#          -e MYSQL_DATABASE=movie_verse_pivot -e MYSQL_USER=user -e MYSQL_PASSWORD=123456 \
+#          mysql:8.0
+#
+#      - name: Start backend container
+#        run: |
+#            docker run -d --name movie_verse \
+#              --network=github_network \
+#              -p 8080:8080 \
+#              -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/movie_verse_pivot \
+#              -e SPRING_DATASOURCE_USERNAME=user \
+#              -e SPRING_DATASOURCE_PASSWORD=123456 \
+#              automan555/movie_verse-image:latest
+#
+#      - name: Wait for MySQL to be ready
+#        run: |
+#          for i in {1..10}; do
+#            docker exec mysql mysqladmin ping -uuser -p123456 -h127.0.0.1 && break
+#            echo "Waiting for MySQL to be ready..."
+#            sleep 5
+#          done
+#
+#
+#      - name: Wait for backend to be ready
+#        run: |
+#          for i in {1..10}; do
+#            curl -f http://192.168.1.13:8080/api/health && break
+#            echo "Waiting for backend to be ready..."
+#            sleep 5
+#          done
+#
+#      - name: Test backend health
+#        run: curl http://192.168.1.13:8080/api/health
+#
+#
+#      #      - name: Install dependencies
+##        run: |
+##          sudo apt-get update
+##          sudo apt-get install -y maven
+##          sudo apt-get install jq
+##          npm install -g snyk
+#
+##      - name: Run Web Application
+##        run: |
+##          nohup mvn spring-boot:run -Dserver.port=8080 &
+##          sleep 30 # 等待服务启动
+#
+#      # 注册用户
+#      - name: Register a test user
+#        run: |
+#          RESPONSE=$(curl -X POST http://movie_verse:8080/api/auth/users/register \
+#            -H "Content-Type: application/json" \
+#            -H "Accept: */*" \
+#            -d "{\"username\":\"testuser3\",\"password\":\"123456\",\"email\":\"test2@example.com\"}")
+#          echo "Registration Response: $RESPONSE"
+#
+#      # 注册并登录获取 Token
+#      - name: Login and fetch token
+#        run: |
+#          RESPONSE=$(curl -X POST http://movie_verse:8080/api/auth/users/login \
+#            -H "Content-Type: application/json" \
+#            -d '{"username":"testuser3","password":"123456"}')
+#          echo "Response: $RESPONSE"
+#          TOKEN=$(echo $RESPONSE | jq -r '.token')
+#          echo "TOKEN=$TOKEN" >> $GITHUB_ENV
+#
+#      # 验证 Token
+#      - name: Verify token
+#        run: "echo \"Token: ${{ env.TOKEN }}\""
+#
+#      - name: Create API endpoints file
+#        run: |
+#          echo "GET http://movie_verse:8080/api/auth/profile/me" > api-endpoints.txt
+#          echo "Authorization: Bearer ${{ env.TOKEN }}" >> api-endpoints.txt
+#
+#
+#      # 拉取 OWASP ZAP 镜像
+#      - name: Pull OWASP ZAP Docker Image
+#        run: docker pull ghcr.io/zaproxy/zaproxy
+#
+#      - name: Fix permissions for ZAP output directory
+#        run: sudo chmod -R 777 /home/runner/work/movieVerse_new/movieVerse_new
+#
+#      - name: Run OWASP ZAP Baseline Scan
+#        run: |
+#          docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
+#          -t http://movie_verse:8080/api/auth/profile/me \
+#          -s /zap/wrk/api-endpoints.txt \
+#          -z "-config replacer.full_list(0).description=auth1 \
+#              -config replacer.full_list(0).enabled=true \
+#              -config replacer.full_list(0).matchtype=REQ_HEADER \
+#              -config replacer.full_list(0).matchstr=Authorization \
+#              -config replacer.full_list(0).regex=false \
+#              -config replacer.full_list(0).replacement=Bearer ${{ env.TOKEN }}" \
+#          -r /zap/wrk/zap-report.html
+#
+#      - name: List ZAP working directory
+#        run: docker run -v ${{ github.workspace }}:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy ls -la /zap/wrk/
+#
+#      - name: List files in workspace
+#        run: ls -la ${{ github.workspace }}
+#
+#
+#      - name: List workspace files
+#        run: ls -la ${{ github.workspace }}
+#
+#      - name: Debug ZAP Logs
+#        run: cat /zap/wrk/zap.out || echo "No ZAP logs found"
+#
+#      # 上传 OWASP ZAP 扫描报告
+#      - name: Upload OWASP ZAP Report
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: zap-report
+#          path: ${{ github.workspace }}/zap-report.html
