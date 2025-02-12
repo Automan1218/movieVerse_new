@@ -32,8 +32,7 @@ jobs:
           chmod 777 ./zap_reports
       - name: Run OWASP ZAP Scan
         run: |
-          docker run -v ${GITHUB_WORKSPACE}/zap_reports:/zap/wrk \  
-          -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
+          docker run -v ${{ github.workspace }}:/zap_reports:/zap/wrk:rw -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
           -t $BASE_URL \
           -r zap_report.html
         env:
