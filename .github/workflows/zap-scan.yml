@@ -25,7 +25,11 @@ jobs:
       - name: Create zap_reports directory
         run: |
           mkdir -p ./zap_reports
-          chmod 777 ./zap_reports  # 确保目录可写       
+
+      - name: Set permissions for zap_reports
+        run: |
+          chmod -R 777 ./zap_reports
+    
 
       - name: Run OWASP ZAP Scan
         run: |
