@@ -38,7 +38,8 @@ jobs:
             -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
             -t $BASE_URL --autooff\
             -r /zap/wrk/zap_report.html  # 生成报告到挂载的本地目录
-
+        env:
+          BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/api/auth/health"  # 设置目标地址
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
