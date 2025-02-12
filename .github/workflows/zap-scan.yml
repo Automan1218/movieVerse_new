@@ -37,6 +37,7 @@ jobs:
           mkdir -p ./zap_reports
            docker run -v $(pwd)/zap_reports:/zap/wrk -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
             -t $BASE_URL \
+            -c /zap/zap.conf \
             -r zap_report.html
         env:
           BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/api/auth/health"  # 设置目标地址
