@@ -23,6 +23,9 @@ public class reviewAndRatingApiController {
     @Autowired
     private MovieRatingService movieRatingService;
 
+
+
+
     //**** these methods are likely to be used by web and mobile app ****
     //get review and rating of a user for a movie
 //    @GetMapping("/getreviewandrating/movies/{movieId}/users/{userId}")
@@ -385,8 +388,5 @@ public class reviewAndRatingApiController {
 //        List<EpisodeRating> ratings = episodeRatingService.getRatingsByUserId(userId);
 //        return ResponseEntity.ok(ratings);
 //    }
-    @GetMapping("/health")
-    public ResponseEntity<String> healthCheck() {
-        return ResponseEntity.ok("OK");
-    }
+
 }
