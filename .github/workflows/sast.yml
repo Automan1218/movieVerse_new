@@ -1,0 +1,38 @@
+name: sast.yml
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  sast:
+    name: Static Application Security Testing (SAST) with SpotBugs
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout Code
+        uses: actions/checkout@v4.0.0
+
+      # 设置 Java 和 Maven 环境
+      - name: Set up Java and Maven
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Install dependencies and skip tests
+        run: mvn clean install -DskipTests=true
+
+      # 安装依赖并运行 SpotBugs
+      - name: Run SpotBugs
+        run: |
+          mvn spotbugs:spotbugs -DskipTests=true
+      # 保存 SpotBugs 报告到 GitHub Actions 工作流的结果
+      - name: Upload SpotBugs Report
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: spotbugs-report
+          path: target/
