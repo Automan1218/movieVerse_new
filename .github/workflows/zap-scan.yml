@@ -24,20 +24,15 @@ jobs:
       # 2. 创建 zap_reports 目录并设置权限
       - name: Create zap_reports directory
         run: |
-          mkdir -p ./zap_reports
+          mkdir -p ${{ github.workspace }}/.github/zap_reports
 
       - name: Set permissions for zap_reports
         run: |
-          chmod -R 777 ./zap_reports
+          chmod -R 777 ${{ github.workspace }}/.github/zap_reports
 
       - name: Run OWASP ZAP Scan
         run: |
-          mkdir -p ./zap_reports  # 创建本地报告目录
-          docker run \
-            -v $(pwd)/zap_reports:/zap/wrk \  # 挂载本地目录到容器
-            -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-            -t $BASE_URL --autooff\
-            -r /zap/wrk/zap_report.html  # 生成报告到挂载的本地目录
+          docker run -v ${{ github.workspace }}/.github/zap_reports:/zap/wrk --user 1000:1000 -t ghcr.io/zaproxy/zaproxy zap-baseline.py -t $BASE_URL --autooff -r /zap/wrk/zap_report.html
         env:
           BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/api/auth/health"  # 设置目标地址
 
