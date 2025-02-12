@@ -29,15 +29,15 @@ jobs:
 
 
       - name: Run OWASP ZAP Scan
-
-        env:
-          BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/auth/api/health"  # 设置目标地址
         run: |
-          mkdir -p /zap/wrk/
-          chmod 777 /zap/wrk/
-          docker run -v ${{ github.workspace }}:/zap/wrk/ -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
+          mkdir -p ${{ github.workspace }}/zap/wrk
+          docker run -v ${{ github.workspace }}/zap/wrk:/zap/wrk -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
             -t $BASE_URL/api \
             -r zap_report.html
+        env:
+          BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/auth/api/health"  # 设置目标地址
+
+
 
 #      - name: Run OWASP ZAP Baseline Scan
 #        run: |
