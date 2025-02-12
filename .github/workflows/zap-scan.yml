@@ -20,25 +20,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Create API endpoints file
-        run: |
-            echo "GET http://${{ secrets.EC2_HOST }}:8080/api/auth/health" > api-endpoints.txt
-            
 
       # 2. 创建 zap_reports 目录并设置权限
       - name: Create zap_reports directory
         run: |
           mkdir -p ./zap_reports
-          chmod 777 ./zap_reports
+          chmod 777 ./zap_reports  # 确保目录可写       
+
       - name: Run OWASP ZAP Scan
         run: |
-          docker run \
-          -v ${{ github.workspace }}/zap_reports:/zap/wrk \  
-          -v ${{ github.workspace }}/zap.conf:/zap/zap.conf \  
-          -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-          -t $BASE_URL \
-          -c /zap/zap.conf \  
-          -r zap_report.html
+          mkdir -p ./zap_reports
+          docker run -v $(pwd)/zap_reports:/zap/wrk -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
+            -t $BASE_URL \
+            -c /zap/wrk/zap.conf \
+            -r zap_report.html
         env:
           BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/api/auth/health"  # 设置目标地址
 
