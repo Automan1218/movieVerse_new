@@ -29,8 +29,8 @@ jobs:
       - name: Run OWASP ZAP Scan
         run: |
           docker run \
-          -v "$(pwd)/zap_reports:/zap/wrk" \  
-          -v "$(pwd)/zap.conf:/zap/zap.conf" \  
+          -v "${GITHUB_WORKSPACE}/zap_reports:/zap/wrk" \  
+          -v "${GITHUB_WORKSPACE}/zap.conf:/zap/zap.conf" \  
           -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
           -t "$BASE_URL" \
           -c /zap/zap.conf \  
