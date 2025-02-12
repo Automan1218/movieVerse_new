@@ -25,15 +25,9 @@ jobs:
       - name: Create zap_reports directory
         run: |
           mkdir -p ./zap_reports
-          chmod 777 ./zap_reports  # 确保目录可写       
-
+          chmod 777 ./zap_reports  # 确保目录可写
       - name: Run OWASP ZAP Scan
         run: |
-#          mkdir -p ./zap_reports
-#          docker run -v $(pwd)/zap_reports:/zap/wrk -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-#            -t $BASE_URL \
-#            -c /zap/wrk/zap.conf \
-#            -r zap_report.html
           docker run \
           -v $(pwd)/zap_reports:/zap/wrk \  # 挂载报告目录
           -v $(pwd)/zap.conf:/zap/zap.conf \  # 挂载配置文件
