@@ -31,16 +31,7 @@ jobs:
         run: |
           mkdir -p ./.github/zap_reports
           docker run -v $(pwd)/.github/zap_reports:/zap/wrk -t ghcr.io/zaproxy/zaproxy zap-baseline.py \
-            -t $BASE_URL \
-             --spider-max-depth 1 \
-             --spider-scope-include "^http://47.129.221.190:8080/api/auth/health$" \
-             --scanner-active-scan true \
-             --scanner-policy "Default Policy" \
-             --scanner-strength MEDIUM \
-             --scanner-alert-threshold MEDIUM \
-             --report-template "traditional-html" \
-             --report-dir /zap/wrk \
-             --report-file zap_report.html
+            -t $BASE_URL --autooff\
             -r /zap/wrk/zap_report.html
         env:
           BASE_URL: "http://${{ secrets.EC2_HOST }}:8080/api/auth/health"  # 设置目标地址
