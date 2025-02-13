@@ -1,4 +1,4 @@
-package dev.team08.controller.api;
+package dev.team08.movie_verse_backend.api;
 
 import dev.team08.movie_verse_backend.controller.api.ProfileApiController;
 import dev.team08.movie_verse_backend.dto.request.GenreRequest;
