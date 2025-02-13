@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;;
 @ActiveProfiles("test")
 @SpringBootTest
-@Import(TestDataSourceConfig.class)
+//@Import(TestDataSourceConfig.class)
 class MovieVerseBackendApplicationTests {
 
     @Test
