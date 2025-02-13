@@ -24,12 +24,12 @@ jobs:
           distribution: temurin
 
       - name: Install dependencies and skip tests
-        run: mvn clean install -DskipTests=true
+        run: mvn clean install
 
       # 安装依赖并运行 SpotBugs
       - name: Run SpotBugs
         run: |
-          mvn spotbugs:spotbugs -DskipTests=true
+          mvn spotbugs:spotbugs
       # 保存 SpotBugs 报告到 GitHub Actions 工作流的结果
       - name: Upload SpotBugs Report
         uses: actions/upload-artifact@v4.0.0
